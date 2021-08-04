@@ -64,35 +64,43 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}/
 )
 
-# add_executable(talker
-#   src/talker.cpp
-# )
+install(DIRECTORY res
+  DESTINATION lib/${PROJECT_NAME}/
+)
 
-# ament_target_dependencies(talker
-#   "rclcpp"
-# )
+add_executable(pc_talker
+  src/pc_talker.cpp
+)
 
-# # we want to use the messages from the same package
-# # would not be needed if we build the messages in a separate package
-# rosidl_target_interfaces(talker
-#   ${PROJECT_NAME} "rosidl_typesupport_cpp")
+ament_target_dependencies(pc_talker
+  "rclcpp"
+)
 
-# install(TARGETS talker
-#   DESTINATION lib/${PROJECT_NAME})
+target_link_libraries(pc_talker ${Open3D_LIBRARIES})
 
-# add_executable(listener
-#   src/listener.cpp
-# )
+# we want to use the messages from the same package
+# would not be needed if we build the messages in a separate package
+rosidl_target_interfaces(pc_talker
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-# ament_target_dependencies(listener
-#   "rclcpp"
-# )
+install(TARGETS pc_talker
+  DESTINATION lib/${PROJECT_NAME})
 
-# rosidl_target_interfaces(listener
-#   ${PROJECT_NAME} "rosidl_typesupport_cpp")
+add_executable(pc_listener
+  src/pc_listener.cpp
+)
 
-# install(TARGETS listener
-#   DESTINATION lib/${PROJECT_NAME})
+ament_target_dependencies(pc_listener
+  "rclcpp"
+)
+
+target_link_libraries(pc_listener ${Open3D_LIBRARIES})
+
+rosidl_target_interfaces(pc_listener
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+
+install(TARGETS pc_listener
+  DESTINATION lib/${PROJECT_NAME})
 
 # # we build an iceoryx subscriber app that also listens to the topic
 # add_executable(iox_subscriber

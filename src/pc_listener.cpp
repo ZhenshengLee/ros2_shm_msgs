@@ -17,37 +17,36 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-#include "ros2_shm_demo/msg/shm_topic.hpp"
+#include "shm_msgs/msg/point_cloud2.hpp"
+#include "shm_msgs/open3d_conversions.hpp"
 
+using namespace std::chrono_literals;
+using namespace open3d::io;
+using namespace open3d_conversions;
 class Listener : public rclcpp::Node {
 private:
-  using Topic = ros2_shm_demo::msg::ShmTopic;
+  using Topic = shm_msgs::msg::PointCloud8k;
 
 public:
   explicit Listener(const rclcpp::NodeOptions &options)
-      : Node("shm_demo_listener", options) {
+      : Node("pc_8k_listener", options) {
 
     // subscription callback to process arriving data
     auto callback = [this](const Topic::SharedPtr msg) -> void {
-      // Read the message and perform operations accordingly.
-      // Here we copy the data and display it.
 
-      std::memcpy(m_lastData, msg->data.data(), msg->size);
-      m_lastData[Topic::MAX_SIZE] =
-          '\0'; // in case there was no zero termination
+      rosToOpen3d(msg, *last_cloud);
 
-      RCLCPP_INFO(this->get_logger(), "Received %s %lu", m_lastData,
-                  msg->counter);
+      RCLCPP_INFO(this->get_logger(), "Received ");
     };
 
     rclcpp::QoS qos(rclcpp::KeepLast(10));
-    m_subscription = create_subscription<Topic>("chatter", qos, callback);
+    m_subscription = create_subscription<Topic>("shm_pc_8k", qos, callback);
   }
 
 private:
   rclcpp::Subscription<Topic>::SharedPtr m_subscription;
 
-  char m_lastData[256];
+  std::shared_ptr<open3d::geometry::PointCloud> last_cloud{std::make_shared<open3d::geometry::PointCloud>()};
 };
 
 int main(int argc, char *argv[]) {

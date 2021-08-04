@@ -11,6 +11,21 @@ Currently tested in ros2 galactic with cyclonedds+iceoryx dds layer.
 - [x] pointcloud2
 - [ ] image
 
+## examples
+
+```sh
+# t1
+iox-roudi
+
+# t2
+cd ./install/shm_msgs/lib/shm_msgs/
+./pc_talker
+
+# t3
+cd ./install/shm_msgs/lib/shm_msgs/
+./pc_listener
+```
+
 ## software components
 
 this package includes ros2 msg definitions and demos that supports the msgs.
@@ -20,8 +35,6 @@ this package includes ros2 msg definitions and demos that supports the msgs.
 - open3d_conversions
 - pcl_conversions
 - vision_opencv
-
-### modifier
 
 ## about (true) zero copy
 

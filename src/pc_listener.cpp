@@ -22,7 +22,7 @@
 
 using namespace std::chrono_literals;
 using namespace open3d::io;
-using namespace open3d_conversions;
+using namespace shm_msgs;
 class Listener : public rclcpp::Node {
 private:
   using Topic = shm_msgs::msg::PointCloud8k;

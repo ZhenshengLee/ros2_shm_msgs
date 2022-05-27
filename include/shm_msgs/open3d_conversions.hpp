@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef OPEN3D_CONVERSIONS__OPEN3D_CONVERSIONS_HPP_
-#define OPEN3D_CONVERSIONS__OPEN3D_CONVERSIONS_HPP_
+#ifndef SHM_MSGS__OPEN3D_CONVERSIONS_HPP_
+#define SHM_MSGS__OPEN3D_CONVERSIONS_HPP_
 
 // ROS2
 #include <shm_msgs/msg/point_cloud2.hpp>
@@ -27,7 +27,7 @@
 // C++
 #include <string>
 
-namespace open3d_conversions
+namespace shm_msgs
 {
 /**
  * @brief Copy data from a open3d::geometry::PointCloud to a
@@ -54,8 +54,6 @@ void rosToOpen3d(
   open3d::geometry::PointCloud & o3d_pc,
   bool skip_colors = false);
 
-}  // namespace open3d_conversions
+}  // namespace shm_msgs
 
-#include <shm_msgs/impl/open3d_conversions.hpp> // NOLINT
-
-#endif  // OPEN3D_CONVERSIONS__OPEN3D_CONVERSIONS_HPP_
+#endif  // SHM_MSGS__OPEN3D_CONVERSIONS_HPP_

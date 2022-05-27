@@ -1,0 +1,11 @@
+add_executable(pc_talker pc_talker.cpp)
+ament_target_dependencies(pc_talker "rclcpp")
+target_link_libraries(pc_talker  ${PROJECT_NAME}_open3d ${Open3D_LIBRARIES})
+rosidl_target_interfaces(pc_talker ${PROJECT_NAME} "rosidl_typesupport_cpp")
+install(TARGETS pc_talker DESTINATION bin/${PROJECT_NAME})
+
+add_executable(pc_listener pc_listener.cpp)
+ament_target_dependencies(pc_listener "rclcpp")
+target_link_libraries(pc_listener  ${PROJECT_NAME}_open3d ${Open3D_LIBRARIES})
+rosidl_target_interfaces(pc_listener ${PROJECT_NAME} "rosidl_typesupport_cpp")
+install(TARGETS pc_listener DESTINATION bin/${PROJECT_NAME})

@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SHM_MSGS__IMPL__OPEN3D_CONVERSIONS_HPP_
-#define SHM_MSGS__IMPL__OPEN3D_CONVERSIONS_HPP_
-
 // C++
 #include <memory>
 #include <string>
@@ -22,7 +19,7 @@
 #include "shm_msgs/open3d_conversions.hpp"
 #include "shm_msgs/array_helper.hpp"
 
-namespace open3d_conversions
+namespace shm_msgs
 {
 void open3dToRos(
   const open3d::geometry::PointCloud & pointcloud,
@@ -115,6 +112,4 @@ void rosToOpen3d(
     }
   }
 }
-}  // namespace open3d_conversions
-
-#endif // SHM_MSGS__IMPL__OPEN3D_CONVERSIONS_HPP_
+}  // namespace shm_msgs

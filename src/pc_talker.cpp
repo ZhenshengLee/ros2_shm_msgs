@@ -25,7 +25,7 @@
 
 using namespace std::chrono_literals;
 using namespace open3d::io;
-using namespace open3d_conversions;
+using namespace shm_msgs;
 
 class Talker : public rclcpp::Node {
 private:

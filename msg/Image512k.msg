@@ -23,4 +23,6 @@ shm_msgs/String encoding       # Encoding of pixels -- channel meaning, ordering
 
 uint8 is_bigendian    # is this data bigendian?
 uint32 step           # Full row length in bytes
-uint8[] data          # actual matrix data, size is (step * rows)
+uint8[524288] data          # actual matrix data, size is (step * rows)
+
+uint32 DATA_MAX_SIZE=524288

@@ -2,35 +2,63 @@
 
 fou Chinese reader please refer [简体中文](./README_cn.md)
 
+## introduction
+
 Zero copy can save times of copy in IPC, thus reduces cpu usage and transport latency, which can be used in real-time-critical systems or resource-constrained computing platforms.
 
 This package provides many ros2 message definitions that have a good support to true zero copy transportation in IPC(in a single machine) context.
 
-Currently tested in ros2 galactic with cyclonedds+iceoryx dds layer.
+Currently tested in ros2 galactic with the following layers:
 
-## todolist
+- rmw_cyclonedds_cpp
+  - cyclonedds(0.8.x)+iceoryx(1.0.x)
+- rmw_fastrtps_cpp
+  - fastdds(2.3.x)
+
+the performance of zero copy canbe seen in [ros2_jetson_benchmarks](https://github.com/ZhenshengLee/ros2_jetson_benchmarks)
+
+## development status
 
 pointcloud and image are currently supported.
 
 |  feature              | Status                             |
 |-----------------------|------------------------------------|
 | pointcloud8k          | :heavy_check_mark:                 |
-| pointcloud256k        | :x: (coming)                       |
-| pointcloud1m          | :x: (coming)                       |
-| pointcloud2m          | :x: (coming)                       |
-| pointcloud4m          | :x: (coming)                       |
-| pointcloud8m          | :x: (coming)                       |
+| pointcloud256k        | :x:                                |
+| pointcloud1m          | :x:                                |
+| pointcloud2m          | :x:                                |
+| pointcloud4m          | :x:                                |
+| pointcloud8m          | :x:                                |
 | image8k               | :x:                                |
 | image256k             | :x:                                |
-| image512k             | :x:                                |
 | image1m               | :x:                                |
 | image2m               | :x:                                |
 | image4m               | :x:                                |
 | image8m               | :x:                                |
-| pointcloud-rviz bridge| :x: (comming)                      |
-| image-rviz bridge     | :x: (comming)                      |
+| open3d_conversions    | :x:                                |
+| opencv_conversions    | :x:                                |
+| pcl_conversions       | :x:                                |
 
 ## examples
+
+### select rmw
+
+for rmw_cyclonedds
+
+```sh
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+export CYCLONEDDS_URI=file:///$HOME/shm_cyclonedds.xml
+```
+
+for rmw_fastrtps_cpp
+
+```sh
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+export FASTRTPS_DEFAULT_PROFILES_FILE=$HOME/shm_fastdds.xml
+export RMW_FASTRTPS_USE_QOS_FROM_XML=1
+```
+
+### run talker and listener
 
 ```sh
 # t1
@@ -45,18 +73,37 @@ cd ./install/shm_msgs/lib/shm_msgs/
 ./pc_listener
 ```
 
+### check if zero copy
+
+for rmw_cyclonedds_cpp
+
+```sh
+iox-introspection-client --all
+# to check if iceoryx_rt process has been created
+```
+
+for rmw_fastrtps_cpp
+
+```sh
+ls /dev/shm
+# to check if there is fastdds shm file being created
+```
+
 ## software components
 
 this package includes ros2 msg definitions and demos that supports the msgs.
 
 - shm_msgs::msg::PointCloud8k
+- shm_msgs::msg::Image8k
 - PointCloud2Modifier8k
 - open3d_conversions
+- opencv_conversions
 - pcl_conversions
-- vision_opencv
 - rviz-bridge
 
-## true zero copy
+## About zero copy
+
+### true zero copy
 
 Zero_copy is a transport layer to get a better performance especially when payload size exceeds 64k.
 
@@ -72,7 +119,7 @@ In short, zero copy needs api support through all transport layers. See [doc fro
 
 This package provides fixed-length ros2 msg definitions, helper functions and demos to support true z copy.
 
-## minimum copy
+### minimum copy
 
 Without fixed-length msg, a serialization is needed before IPC, so copy can not be avoided.
 
@@ -104,7 +151,7 @@ Feel free to create issues in the repo.
 
 ## acknowledgement
 
-[Iceoryx](https://iceoryx.io/)
-[Apex.AI](http://apex.ai/)
-[CycloneDDS](https://www.adlinktech.com/en/CycloneDDS)
-[eCAL](http://ecal.io/)
+- [Iceoryx](https://iceoryx.io/)
+- [Apex.AI](http://apex.ai/)
+- [CycloneDDS](https://www.adlinktech.com/en/CycloneDDS)
+- [eCAL](http://ecal.io/)

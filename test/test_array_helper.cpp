@@ -46,3 +46,11 @@ TEST(shm_msgs, ShmSetStr)
   ASSERT_EQ(shm_str.size, 3);
   ASSERT_TRUE(shm_msgs::is_equal(shm_str, "rgb"));
 }
+
+TEST(shm_msgs, ShmGetStr)
+{
+  shm_msgs::msg::String shm_str;
+  shm_msgs::set_str(shm_str, "rgb");
+  std::string std_string = shm_msgs::get_str(shm_str);
+  ASSERT_EQ(std_string, "rgb");
+}

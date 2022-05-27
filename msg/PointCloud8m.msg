@@ -25,4 +25,4 @@ uint8[8388608] data         # Actual point data, size is (row_step*height)
 
 bool is_dense        # True if there are no invalid points
 
-uint32 MAX_SIZE=8388608
+uint32 DATA_MAX_SIZE=8388608

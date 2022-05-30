@@ -21,7 +21,7 @@ find_package(rcpputils REQUIRED)
 
 find_package(ament_cmake REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(Open3D REQUIRED)
+find_package(Open3D)
 find_package(Boost QUIET)
 
 find_package(OpenCV 4 QUIET

@@ -3,21 +3,23 @@
 # It is a function template
 # It is a member function
 
-add_library(${PROJECT_NAME}_open3d
-    ./open3d_conversions.cpp
-)
-target_include_directories(${PROJECT_NAME}_open3d PUBLIC
+if(Open3D_FOUND)
+  add_library(${PROJECT_NAME}_open3d
+  ./open3d_conversions.cpp
+  )
+  target_include_directories(${PROJECT_NAME}_open3d PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_c>"
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_cpp>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
   ${Open3D_INCLUDE_DIRS}
   )
-target_link_libraries(${PROJECT_NAME}_open3d
-    ${Open3D_LIBRARIES}
-)
-rosidl_target_interfaces(${PROJECT_NAME}_open3d
+  target_link_libraries(${PROJECT_NAME}_open3d
+  ${Open3D_LIBRARIES}
+  )
+  rosidl_target_interfaces(${PROJECT_NAME}_open3d
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS ${PROJECT_NAME}_open3d DESTINATION lib/${PROJECT_NAME})
+  install(TARGETS ${PROJECT_NAME}_open3d DESTINATION lib/${PROJECT_NAME})
+endif()
 
 add_library(${PROJECT_NAME}_image
     ./opencv_conversions.cpp

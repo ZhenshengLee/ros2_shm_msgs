@@ -18,6 +18,7 @@ find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rcpputils REQUIRED)
+find_package(cv_bridge REQUIRED)
 
 find_package(ament_cmake REQUIRED)
 find_package(Eigen3 REQUIRED)
@@ -47,6 +48,7 @@ find_package(fastrtps CONFIG REQUIRED)
 set(dependencies
   rclcpp
   rosidl_default_runtime
+  cv_bridge
 )
 
 set(msg_files
@@ -82,7 +84,12 @@ install(DIRECTORY include/${PROJECT_NAME}/
 )
 
 install(DIRECTORY res
-  DESTINATION bin/${PROJECT_NAME}/
+  DESTINATION lib/${PROJECT_NAME}/
+)
+
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}
 )
 
 add_subdirectory(lib)
@@ -93,7 +100,7 @@ if(BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
-# add_subdirectory(tool)
+add_subdirectory(tool)
 
 ament_export_dependencies(${dependencies})
 ament_export_include_directories(include)

@@ -15,7 +15,7 @@ Currently tested in ros2 galactic with the following layers:
 - rmw_fastrtps_cpp
   - fastdds(2.3.x)
 
-the performance of zero copy canbe seen in [ros2_jetson_benchmarks](https://github.com/ZhenshengLee/ros2_jetson_benchmarks)
+the performance of zero copy can be seen in [ros2_jetson_benchmarks](https://github.com/ZhenshengLee/ros2_jetson_benchmarks)
 
 ## development status
 
@@ -24,30 +24,34 @@ pointcloud and image are currently supported.
 |  feature              | Status                             |
 |-----------------------|------------------------------------|
 | pointcloud8k          | :heavy_check_mark:                 |
-| pointcloud256k        | :x:                                |
+| pointcloud512k        | :x:                                |
 | pointcloud1m          | :x:                                |
 | pointcloud2m          | :x:                                |
 | pointcloud4m          | :x:                                |
 | pointcloud8m          | :x:                                |
-| image8k               | :x:                                |
-| image256k             | :x:                                |
-| image1m               | :x:                                |
-| image2m               | :x:                                |
-| image4m               | :x:                                |
-| image8m               | :x:                                |
-| open3d_conversions    | :x:                                |
-| opencv_conversions    | :x:                                |
+| image8k               | :heavy_check_mark:                 |
+| image512k             | :heavy_check_mark:                 |
+| image1m               | :heavy_check_mark:                 |
+| image2m               | :heavy_check_mark:                 |
+| image4m               | :heavy_check_mark:                 |
+| image8m               | :heavy_check_mark:                 |
+| open3d_conversions    | :heavy_check_mark:                 |
+| opencv_conversions    | :heavy_check_mark:                 |
 | pcl_conversions       | :x:                                |
+| shm_image_bridge      | :heavy_check_mark:                 |
+| shm_open3d_bridge     | :x:                                |
+| shm_pcl_bridge        | :x:                                |
 
-## examples
-
-### select rmw
+## select rmw
 
 for rmw_cyclonedds
 
 ```sh
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 export CYCLONEDDS_URI=file:///$HOME/shm_cyclonedds.xml
+
+# t0
+iox-roudi
 ```
 
 for rmw_fastrtps_cpp
@@ -58,19 +62,18 @@ export FASTRTPS_DEFAULT_PROFILES_FILE=$HOME/shm_fastdds.xml
 export RMW_FASTRTPS_USE_QOS_FROM_XML=1
 ```
 
-### run talker and listener
+## shm_image examples
+
+### run image talker and listener
 
 ```sh
 # t1
-iox-roudi
+cd ./install/shm_msgs/lib/shm_msgs/
+./image_talker
 
 # t2
 cd ./install/shm_msgs/lib/shm_msgs/
-./pc_talker
-
-# t3
-cd ./install/shm_msgs/lib/shm_msgs/
-./pc_listener
+./image_listener
 ```
 
 ### check if zero copy
@@ -89,6 +92,33 @@ ls /dev/shm
 # to check if there is fastdds shm file being created
 ```
 
+### run bridge and rviz2
+
+```sh
+# configure topic remapping
+ros2 launch shm_msgs shm_image_bridge.launch.py
+```
+
+to check the msg flow and visualize the msg
+
+![rqt_graph](./doc/image/rqt_graph.png)
+
+![rviz2](./doc/image/rviz2.png)
+
+## shm_open3d example
+
+### run open3d talker and listener
+
+```sh
+# t1
+cd ./install/shm_msgs/lib/shm_msgs/
+./open3d_talker
+
+# t2
+cd ./install/shm_msgs/lib/shm_msgs/
+./open3d_listener
+```
+
 ## software components
 
 this package includes ros2 msg definitions and demos that supports the msgs.
@@ -99,7 +129,8 @@ this package includes ros2 msg definitions and demos that supports the msgs.
 - open3d_conversions
 - opencv_conversions
 - pcl_conversions
-- rviz-bridge
+- shm_pcl_bridge
+- shm_image_bridge
 
 ## About zero copy
 

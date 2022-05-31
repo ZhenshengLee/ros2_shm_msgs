@@ -28,6 +28,7 @@
   <depend>message_filters</depend>
   <depend>pcl_msgs</depend>
   <depend>rclcpp</depend>
+  <depend>cv_bridge</depend>
 
   <member_of_group>rosidl_interface_packages</member_of_group>
 

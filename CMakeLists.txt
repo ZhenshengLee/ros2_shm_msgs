@@ -102,6 +102,8 @@ endif()
 
 add_subdirectory(tool)
 
+ament_export_targets(export_${PROJECT_NAME})
+
 ament_export_dependencies(${dependencies})
 ament_export_include_directories(include)
 

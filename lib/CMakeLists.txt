@@ -18,7 +18,11 @@ if(Open3D_FOUND)
   )
   rosidl_target_interfaces(${PROJECT_NAME}_open3d
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
-  install(TARGETS ${PROJECT_NAME}_open3d DESTINATION lib/${PROJECT_NAME})
+  install(TARGETS ${PROJECT_NAME}_open3d
+    # EXPORT export_${PROJECT_NAME}
+    DESTINATION lib/
+    )
+  ament_export_libraries(${PROJECT_NAME}_open3d)
 endif()
 
 add_library(${PROJECT_NAME}_image
@@ -41,4 +45,8 @@ target_link_libraries(${PROJECT_NAME}_image
 )
 rosidl_target_interfaces(${PROJECT_NAME}_image
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS ${PROJECT_NAME}_image DESTINATION lib/${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME}_image
+  EXPORT export_${PROJECT_NAME}
+  DESTINATION lib/
+  )
+ament_export_libraries(${PROJECT_NAME}_image)

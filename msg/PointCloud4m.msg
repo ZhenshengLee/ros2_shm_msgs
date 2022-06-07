@@ -17,6 +17,7 @@ uint32 width
 
 # Describes the channels and their layout in the binary data blob.
 shm_msgs/PointField[8] fields
+uint8 fields_size 0
 
 bool    is_bigendian # Is this data bigendian?
 uint32  point_step   # Length of a point in bytes
@@ -25,4 +26,5 @@ uint8[4194304] data         # Actual point data, size is (row_step*height)
 
 bool is_dense        # True if there are no invalid points
 
+uint8 FIELDS_MAX_SIZE=8
 uint32 DATA_MAX_SIZE=4194304

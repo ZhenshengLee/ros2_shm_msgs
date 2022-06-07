@@ -50,3 +50,26 @@ install(TARGETS ${PROJECT_NAME}_image
   DESTINATION lib/
   )
 ament_export_libraries(${PROJECT_NAME}_image)
+
+add_library(${PROJECT_NAME}_pcl
+    ./pcl_conversions.cpp
+)
+target_include_directories(${PROJECT_NAME}_pcl PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_c>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_cpp>"
+  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+  )
+target_link_libraries(${PROJECT_NAME}_pcl
+  rcpputils::rcpputils
+)
+target_link_libraries(${PROJECT_NAME}_pcl
+  ${Boost_LIBRARIES}
+  ${PCL_LIBRARIES}
+)
+rosidl_target_interfaces(${PROJECT_NAME}_pcl
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+install(TARGETS ${PROJECT_NAME}_pcl
+  EXPORT export_${PROJECT_NAME}
+  DESTINATION lib/
+  )
+ament_export_libraries(${PROJECT_NAME}_pcl)

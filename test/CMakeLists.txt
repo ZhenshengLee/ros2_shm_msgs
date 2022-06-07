@@ -28,3 +28,11 @@ ament_add_gtest(test_${PROJECT_NAME}_image
 target_link_libraries(test_${PROJECT_NAME}_image ${PROJECT_NAME}_image)
 rosidl_target_interfaces(test_${PROJECT_NAME}_image ${PROJECT_NAME} "rosidl_typesupport_cpp")
 install(TARGETS test_${PROJECT_NAME}_image DESTINATION test/${PROJECT_NAME})
+
+ament_add_gtest(test_${PROJECT_NAME}_pcl
+  test_pcl_conversions.cpp
+)
+target_link_libraries(test_${PROJECT_NAME}_pcl ${PROJECT_NAME}_pcl)
+ament_target_dependencies(test_${PROJECT_NAME}_pcl "rclcpp")
+rosidl_target_interfaces(test_${PROJECT_NAME}_pcl ${PROJECT_NAME} "rosidl_typesupport_cpp")
+install(TARGETS test_${PROJECT_NAME}_pcl DESTINATION test/${PROJECT_NAME})

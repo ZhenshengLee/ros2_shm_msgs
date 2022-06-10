@@ -24,23 +24,23 @@ pointcloud and image are currently supported.
 |  feature              | Status                             |
 |-----------------------|------------------------------------|
 | pointcloud8k          | :heavy_check_mark:                 |
-| pointcloud512k        | :x:                                |
-| pointcloud1m          | :x:                                |
-| pointcloud2m          | :x:                                |
-| pointcloud4m          | :x:                                |
-| pointcloud8m          | :x:                                |
+| pointcloud512k        | :heavy_check_mark:                 |
+| pointcloud1m          | :heavy_check_mark:                 |
+| pointcloud2m          | :heavy_check_mark:                 |
+| pointcloud4m          | :heavy_check_mark:                 |
+| pointcloud8m          | :heavy_check_mark:                 |
 | image8k               | :heavy_check_mark:                 |
 | image512k             | :heavy_check_mark:                 |
 | image1m               | :heavy_check_mark:                 |
 | image2m               | :heavy_check_mark:                 |
 | image4m               | :heavy_check_mark:                 |
 | image8m               | :heavy_check_mark:                 |
-| open3d_conversions    | :heavy_check_mark:                 |
+| open3d_conversions    | :x:                                |
 | opencv_conversions    | :heavy_check_mark:                 |
-| pcl_conversions       | :x:                                |
+| pcl_conversions       | :heavy_check_mark:                 |
 | shm_image_bridge      | :heavy_check_mark:                 |
 | shm_open3d_bridge     | :x:                                |
-| shm_pcl_bridge        | :x:                                |
+| shm_pcl_bridge        | :heavy_check_mark:                 |
 
 ## select rmw
 
@@ -104,6 +104,33 @@ to check the msg flow and visualize the msg
 ![rqt_graph](./doc/image/rqt_graph.png)
 
 ![rviz2](./doc/image/rviz2.png)
+
+## shm_pcl example
+
+### run pcl talker and listener
+
+```sh
+# t1
+cd ./install/shm_msgs/lib/shm_msgs/
+./pcl2m_talker
+
+# t2
+cd ./install/shm_msgs/lib/shm_msgs/
+./pcl2m_listener
+```
+
+### run bridge and rviz2
+
+```sh
+# configure topic remapping
+ros2 launch shm_msgs shm_pcl_bridge.launch.py
+```
+
+to check the msg flow and visualize the msg
+
+![rqt_graph_pcl](./doc/image/rqt_graph_pcl.png)
+
+![rviz2_pcl](./doc/image/rviz2_pcl.png)
 
 ## shm_open3d example
 

@@ -39,8 +39,15 @@ public:
 
       RCLCPP_INFO(this->get_logger(), "Received ");
       auto time_offset_ns = (now() - msg->header.stamp).nanoseconds();
+      auto timestamp_offset_ns = (rclcpp::Time(msg->header.stamp) - m_last_cloud_ts).nanoseconds();
       auto time_offset_ms = time_offset_ns / 1000000.0F;
+      auto timestamp_offset_ms = timestamp_offset_ns / 1000000.0F;
       RCLCPP_INFO(get_logger(), "get-pcl8k-transport-time: %.3f", time_offset_ms);
+      if(m_last_cloud_ts.nanoseconds() > 0.0)
+      {
+        RCLCPP_INFO(get_logger(), "get-pcl8k-timestamp_offset-time: %.3f", timestamp_offset_ms);
+      }
+      m_last_cloud_ts = msg->header.stamp;
 
       // fromROSMsg(*msg, *m_last_cloud);
       moveFromROSMsg(*msg, *m_last_cloud);
@@ -57,6 +64,7 @@ private:
   rclcpp::Subscription<Topic>::SharedPtr m_subscription;
   pcl::PointCloud<pcl::PointXYZ>::Ptr m_last_cloud{new pcl::PointCloud<pcl::PointXYZ>};
 //   pcl::visualization::CloudViewer m_viewer{"Cloud Viewer"};
+  rclcpp::Time m_last_cloud_ts{0, 0, RCL_ROS_TIME};
 };
 
 int main(int argc, char *argv[]) {

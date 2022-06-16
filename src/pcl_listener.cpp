@@ -17,22 +17,22 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-#include "shm_msgs/msg/point_cloud2.hpp"
-#include "shm_msgs/pcl_conversions.h"
+#include <sensor_msgs/msg/point_cloud2.hpp>
+#include <pcl_conversions/pcl_conversions.h>
 
 // #include <pcl/visualization/cloud_viewer.h>
 
 using namespace std::chrono_literals;
 using namespace pcl::io;
-using namespace shm_msgs;
+using namespace pcl;
 
 class Listener : public rclcpp::Node {
 private:
-  using Topic = shm_msgs::msg::PointCloud2m;
+  using Topic = sensor_msgs::msg::PointCloud2;
 
 public:
   explicit Listener(const rclcpp::NodeOptions &options)
-      : Node("shm_pcl2m_listener", options) {
+      : Node("pcl_listener", options) {
 
     // subscription callback to process arriving data
     auto callback = [this](const Topic::SharedPtr msg) -> void {
@@ -42,10 +42,10 @@ public:
       auto timestamp_offset_ns = (rclcpp::Time(msg->header.stamp) - m_last_cloud_ts).nanoseconds();
       auto transport_time_ms = transport_time_ns / 1000000.0F;
       auto timestamp_offset_ms = timestamp_offset_ns / 1000000.0F;
-      RCLCPP_INFO(get_logger(), "get-pcl2m-transport-time: %.3f", transport_time_ms);
+      RCLCPP_INFO(get_logger(), "get-pcl-transport-time: %.3f", transport_time_ms);
       if(m_last_cloud_ts.nanoseconds() > 0.0)
       {
-        RCLCPP_INFO(get_logger(), "get-pcl2m-timestamp_offset-time: %.3f", timestamp_offset_ms);
+        RCLCPP_INFO(get_logger(), "get-pcl-timestamp_offset-time: %.3f", timestamp_offset_ms);
       }
       m_last_cloud_ts = msg->header.stamp;
 
@@ -57,7 +57,8 @@ public:
     };
 
     rclcpp::QoS qos(rclcpp::KeepLast(10));
-    m_subscription = create_subscription<Topic>("shm_pc_2m", qos, callback);
+    m_subscription = create_subscription<Topic>("/rslidar_points", qos, callback);
+    // m_subscription = create_subscription<Topic>("/rslidar_points", rclcpp::SensorDataQoS(), callback);
   }
 
 private:

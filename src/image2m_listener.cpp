@@ -17,54 +17,51 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-#include "shm_msgs/msg/point_cloud2.hpp"
-#include "shm_msgs/pcl_conversions.h"
+#include "shm_msgs/msg/image.hpp"
+#include "shm_msgs/opencv_conversions.hpp"
 
-// #include <pcl/visualization/cloud_viewer.h>
+#include <opencv2/opencv.hpp>
 
 using namespace std::chrono_literals;
-using namespace pcl::io;
 using namespace shm_msgs;
-
 class Listener : public rclcpp::Node {
 private:
-  using Topic = shm_msgs::msg::PointCloud2m;
+  using Topic = shm_msgs::msg::Image2m;
 
 public:
   explicit Listener(const rclcpp::NodeOptions &options)
-      : Node("shm_pcl2m_listener", options) {
+      : Node("shm_image2m_listener", options) {
 
     // subscription callback to process arriving data
     auto callback = [this](const Topic::SharedPtr msg) -> void {
 
-      RCLCPP_INFO(this->get_logger(), "Received ");
-      auto transport_time_ns = (now() - msg->header.stamp).nanoseconds();
-      auto timestamp_offset_ns = (rclcpp::Time(msg->header.stamp) - m_last_cloud_ts).nanoseconds();
-      auto transport_time_ms = transport_time_ns / 1000000.0F;
+      RCLCPP_INFO(this->get_logger(), "Received...");
+      last_cvimage = shm_msgs::toCvShare(msg);
+      // last_cvimage = shm_msgs::toCvCopy(msg);
+
+      auto time_offset_ns = (now() - last_cvimage->header.stamp).nanoseconds();
+      auto timestamp_offset_ns = (rclcpp::Time(msg->header.stamp) - m_last_image_ts).nanoseconds();
+      auto time_offset_ms = time_offset_ns / 1000000.0F;
       auto timestamp_offset_ms = timestamp_offset_ns / 1000000.0F;
-      RCLCPP_INFO(get_logger(), "get-pcl2m-transport-time: %.3f", transport_time_ms);
-      if(m_last_cloud_ts.nanoseconds() > 0.0)
+      RCLCPP_INFO(get_logger(), "get-image2m-transport-time: %.3f", time_offset_ms);
+      if(m_last_image_ts.nanoseconds() > 0.0)
       {
-        RCLCPP_INFO(get_logger(), "get-pcl2m-timestamp_offset-time: %.3f", timestamp_offset_ms);
+        RCLCPP_INFO(get_logger(), "get-image2m-timestamp_offset-time: %.3f", timestamp_offset_ms);
       }
-      m_last_cloud_ts = msg->header.stamp;
-
-      fromROSMsg(*msg, *m_last_cloud);
-      // moveFromROSMsg(*msg, *m_last_cloud);
-
-      // will block
-    //   m_viewer.showCloud(m_last_cloud);
+      m_last_image_ts = msg->header.stamp;
+      // cv::imshow("im show", last_cvimage->image);
+      // cv::waitKey(0);
     };
 
     rclcpp::QoS qos(rclcpp::KeepLast(10));
-    m_subscription = create_subscription<Topic>("shm_pc_2m", qos, callback);
+    m_subscription = create_subscription<Topic>("shm_image_2m", qos, callback);
   }
 
 private:
   rclcpp::Subscription<Topic>::SharedPtr m_subscription;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr m_last_cloud{new pcl::PointCloud<pcl::PointXYZ>};
-//   pcl::visualization::CloudViewer m_viewer{"Cloud Viewer"};
-  rclcpp::Time m_last_cloud_ts{0, 0, RCL_ROS_TIME};
+
+  shm_msgs::CvImageConstPtr last_cvimage;
+  rclcpp::Time m_last_image_ts{0, 0, RCL_ROS_TIME};
 };
 
 int main(int argc, char *argv[]) {

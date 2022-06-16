@@ -12,66 +12,42 @@ if(Open3D_FOUND)
     install(TARGETS open3d_listener DESTINATION lib/${PROJECT_NAME})
 endif()
 
-add_executable(image_talker image_talker.cpp)
-ament_target_dependencies(image_talker "rclcpp")
-target_link_libraries(image_talker  ${PROJECT_NAME}_image
-    opencv_highgui
+set(SHM_IMAGE_FILES
+  image_talker
+  image1m_talker
+  image2m_talker
+  image_listener
+  image1m_listener
+  image2m_listener
 )
-rosidl_target_interfaces(image_talker ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS image_talker DESTINATION lib/${PROJECT_NAME})
 
-add_executable(image_listener image_listener.cpp)
-ament_target_dependencies(image_listener "rclcpp")
-target_link_libraries(image_listener  ${PROJECT_NAME}_image
-    opencv_highgui
+foreach(SHM_IMAGE_EXE ${SHM_IMAGE_FILES})
+  add_executable(${SHM_IMAGE_EXE} ${SHM_IMAGE_EXE}.cpp)
+  ament_target_dependencies(${SHM_IMAGE_EXE} "rclcpp" "cv_bridge")
+  target_link_libraries(${SHM_IMAGE_EXE}  ${PROJECT_NAME}_image
+      opencv_highgui
+  )
+  rosidl_target_interfaces(${SHM_IMAGE_EXE} ${PROJECT_NAME} "rosidl_typesupport_cpp")
+  install(TARGETS ${SHM_IMAGE_EXE} DESTINATION lib/${PROJECT_NAME})
+endforeach()
+
+set(SHM_PCL_FILES
+  pcl_talker
+  pcl8k_talker
+  pcl1m_talker
+  pcl2m_talker
+  pcl_listener
+  pcl8k_listener
+  pcl1m_listener
+  pcl2m_listener
 )
-rosidl_target_interfaces(image_listener ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS image_listener DESTINATION lib/${PROJECT_NAME})
 
-add_executable(pcl8k_talker pcl8k_talker.cpp)
-ament_target_dependencies(pcl8k_talker "rclcpp")
-target_link_libraries(pcl8k_talker  ${PROJECT_NAME}_pcl
+foreach(SHM_PCL_EXE ${SHM_PCL_FILES})
+  add_executable(${SHM_PCL_EXE} ${SHM_PCL_EXE}.cpp)
+  ament_target_dependencies(${SHM_PCL_EXE} "rclcpp" "sensor_msgs" "pcl_conversions")
+  target_link_libraries(${SHM_PCL_EXE}  ${PROJECT_NAME}_pcl
     ${PCL_LIBRARIES}
-)
-rosidl_target_interfaces(pcl8k_talker ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS pcl8k_talker DESTINATION lib/${PROJECT_NAME})
-
-add_executable(pcl8k_listener pcl8k_listener.cpp)
-ament_target_dependencies(pcl8k_listener "rclcpp")
-target_link_libraries(pcl8k_listener  ${PROJECT_NAME}_pcl
-    ${PCL_LIBRARIES}
-)
-rosidl_target_interfaces(pcl8k_listener ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS pcl8k_listener DESTINATION lib/${PROJECT_NAME})
-
-add_executable(pcl1m_talker pcl1m_talker.cpp)
-ament_target_dependencies(pcl1m_talker "rclcpp")
-target_link_libraries(pcl1m_talker  ${PROJECT_NAME}_pcl
-    ${PCL_LIBRARIES}
-)
-rosidl_target_interfaces(pcl1m_talker ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS pcl1m_talker DESTINATION lib/${PROJECT_NAME})
-
-add_executable(pcl1m_listener pcl1m_listener.cpp)
-ament_target_dependencies(pcl1m_listener "rclcpp")
-target_link_libraries(pcl1m_listener  ${PROJECT_NAME}_pcl
-    ${PCL_LIBRARIES}
-)
-rosidl_target_interfaces(pcl1m_listener ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS pcl1m_listener DESTINATION lib/${PROJECT_NAME})
-
-add_executable(pcl2m_talker pcl2m_talker.cpp)
-ament_target_dependencies(pcl2m_talker "rclcpp")
-target_link_libraries(pcl2m_talker  ${PROJECT_NAME}_pcl
-    ${PCL_LIBRARIES}
-)
-rosidl_target_interfaces(pcl2m_talker ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS pcl2m_talker DESTINATION lib/${PROJECT_NAME})
-
-add_executable(pcl2m_listener pcl2m_listener.cpp)
-ament_target_dependencies(pcl2m_listener "rclcpp")
-target_link_libraries(pcl2m_listener  ${PROJECT_NAME}_pcl
-    ${PCL_LIBRARIES}
-)
-rosidl_target_interfaces(pcl2m_listener ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS pcl2m_listener DESTINATION lib/${PROJECT_NAME})
+  )
+  rosidl_target_interfaces(${SHM_PCL_EXE} ${PROJECT_NAME} "rosidl_typesupport_cpp")
+  install(TARGETS ${SHM_PCL_EXE} DESTINATION lib/${PROJECT_NAME})
+endforeach()

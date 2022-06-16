@@ -53,7 +53,7 @@ public:
     m_publisher = this->create_publisher<Topic>("shm_pc_1m", qos);
 
     // Use a timer to schedule periodic message publishing.
-    m_timer = this->create_wall_timer(1s, publishMessage);
+    m_timer = this->create_wall_timer(0.1s, publishMessage);
   }
 
 private:

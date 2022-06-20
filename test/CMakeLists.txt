@@ -8,7 +8,14 @@ target_link_libraries(test_${PROJECT_NAME}_basic)
 rosidl_target_interfaces(test_${PROJECT_NAME}_basic ${PROJECT_NAME} "rosidl_typesupport_cpp")
 install(TARGETS test_${PROJECT_NAME}_basic DESTINATION test/${PROJECT_NAME})
 
-ament_add_gtest(test_${PROJECT_NAME}_pc test_pointcloud_iterator_8k.cpp)
+ament_add_gtest(test_${PROJECT_NAME}_pc
+  test_pointcloud_iterator_8k.cpp
+  test_pointcloud_iterator_512k.cpp
+  test_pointcloud_iterator_1m.cpp
+  test_pointcloud_iterator_2m.cpp
+  test_pointcloud_iterator_4m.cpp
+  test_pointcloud_iterator_8m.cpp
+)
 rosidl_target_interfaces(test_${PROJECT_NAME}_pc ${PROJECT_NAME} "rosidl_typesupport_cpp")
 install(TARGETS test_${PROJECT_NAME}_pc DESTINATION test/${PROJECT_NAME})
 

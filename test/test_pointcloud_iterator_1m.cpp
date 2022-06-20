@@ -40,11 +40,11 @@
 #include "shm_msgs/msg/point_cloud2.hpp"
 #include "shm_msgs/point_cloud2_iterator.hpp"
 
-TEST(shm_msgs, PointCloud2Iterator8k)
+TEST(shm_msgs, PointCloud2Iterator1m)
 {
   // Create a dummy PointCloud2
   size_t n_points = 4;
-  shm_msgs::msg::PointCloud8k cloud_msg_1, cloud_msg_2;
+  shm_msgs::msg::PointCloud1m cloud_msg_1, cloud_msg_2;
   cloud_msg_1.height = static_cast<uint32_t>(n_points);
   cloud_msg_1.width = 1;
   shm_msgs::PointCloud2Modifier modifier(cloud_msg_1);
@@ -76,10 +76,10 @@ TEST(shm_msgs, PointCloud2Iterator8k)
   }
 
   // Fill 2 using an iterator
-  shm_msgs::PointCloud2Iterator8k<float> iter_x(cloud_msg_2, "x");
-  shm_msgs::PointCloud2Iterator8k<uint8_t> iter_r(cloud_msg_2, "r");
-  shm_msgs::PointCloud2Iterator8k<uint8_t> iter_g(cloud_msg_2, "g");
-  shm_msgs::PointCloud2Iterator8k<uint8_t> iter_b(cloud_msg_2, "b");
+  shm_msgs::PointCloud2Iterator1m<float> iter_x(cloud_msg_2, "x");
+  shm_msgs::PointCloud2Iterator1m<uint8_t> iter_r(cloud_msg_2, "r");
+  shm_msgs::PointCloud2Iterator1m<uint8_t> iter_g(cloud_msg_2, "g");
+  shm_msgs::PointCloud2Iterator1m<uint8_t> iter_b(cloud_msg_2, "b");
   for (size_t i = 0; i < n_points; ++i, ++iter_x, ++iter_r, ++iter_g, ++iter_b) {
     for (size_t j = 0; j < 3; ++j) {
       iter_x[j] = point_data[j + 3 * i];
@@ -91,17 +91,17 @@ TEST(shm_msgs, PointCloud2Iterator8k)
 
 
   // Check the values using an iterator
-  shm_msgs::PointCloud2ConstIterator8k<float> iter_const_1_x(cloud_msg_1, "x"), iter_const_2_x(
+  shm_msgs::PointCloud2ConstIterator1m<float> iter_const_1_x(cloud_msg_1, "x"), iter_const_2_x(
     cloud_msg_2, "x");
-  shm_msgs::PointCloud2ConstIterator8k<float> iter_const_1_y(cloud_msg_1, "y"), iter_const_2_y(
+  shm_msgs::PointCloud2ConstIterator1m<float> iter_const_1_y(cloud_msg_1, "y"), iter_const_2_y(
     cloud_msg_2, "y");
-  shm_msgs::PointCloud2ConstIterator8k<float> iter_const_1_z(cloud_msg_1, "z"), iter_const_2_z(
+  shm_msgs::PointCloud2ConstIterator1m<float> iter_const_1_z(cloud_msg_1, "z"), iter_const_2_z(
     cloud_msg_2, "z");
-  shm_msgs::PointCloud2ConstIterator8k<uint8_t> iter_const_1_r(cloud_msg_1, "r"), iter_const_2_r(
+  shm_msgs::PointCloud2ConstIterator1m<uint8_t> iter_const_1_r(cloud_msg_1, "r"), iter_const_2_r(
     cloud_msg_2, "r");
-  shm_msgs::PointCloud2ConstIterator8k<uint8_t> iter_const_1_g(cloud_msg_1, "g"), iter_const_2_g(
+  shm_msgs::PointCloud2ConstIterator1m<uint8_t> iter_const_1_g(cloud_msg_1, "g"), iter_const_2_g(
     cloud_msg_2, "g");
-  shm_msgs::PointCloud2ConstIterator8k<uint8_t> iter_const_1_b(cloud_msg_1, "b"), iter_const_2_b(
+  shm_msgs::PointCloud2ConstIterator1m<uint8_t> iter_const_1_b(cloud_msg_1, "b"), iter_const_2_b(
     cloud_msg_2, "b");
 
   size_t i = 0;

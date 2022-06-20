@@ -35,11 +35,11 @@ pointcloud and image are currently supported.
 | image2m               | :heavy_check_mark:                 |
 | image4m               | :heavy_check_mark:                 |
 | image8m               | :heavy_check_mark:                 |
-| open3d_conversions    | :x:                                |
+| open3d_conversions    | :heavy_check_mark:                 |
 | opencv_conversions    | :heavy_check_mark:                 |
 | pcl_conversions       | :heavy_check_mark:                 |
 | shm_image_bridge      | :heavy_check_mark:                 |
-| shm_open3d_bridge     | :x:                                |
+| shm_open3d_bridge     | :heavy_check_mark:                 |
 | shm_pcl_bridge        | :heavy_check_mark:                 |
 
 ## select rmw
@@ -69,11 +69,11 @@ export RMW_FASTRTPS_USE_QOS_FROM_XML=1
 ```sh
 # t1
 cd ./install/shm_msgs/lib/shm_msgs/
-./image_talker
+./image1m_talker
 
 # t2
 cd ./install/shm_msgs/lib/shm_msgs/
-./image_listener
+./image1m_listener
 ```
 
 ### check if zero copy
@@ -139,11 +139,11 @@ to check the msg flow and visualize the msg
 ```sh
 # t1
 cd ./install/shm_msgs/lib/shm_msgs/
-./open3d_talker
+./open3d2m_talker
 
 # t2
 cd ./install/shm_msgs/lib/shm_msgs/
-./open3d_listener
+./open3d2m_listener
 ```
 
 ## software components

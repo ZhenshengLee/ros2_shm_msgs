@@ -102,34 +102,35 @@
 namespace shm_msgs
 {
 /**
- * @brief Enables modifying a shm_msgs::msg::PointCloud8k like a container
+ * @brief Enables modifying a msg like a container
  */
-class PointCloud2Modifier8k
+template <typename msg>
+class PointCloud2Modifier
 {
 public:
   /**
    * @brief Default constructor
-   * @param cloud_msg The shm_msgs::msg::PointCloud8k to modify
+   * @param cloud_msg The msg to modify
    */
-  explicit PointCloud2Modifier8k(shm_msgs::msg::PointCloud8k & cloud_msg);
+  explicit PointCloud2Modifier(msg & cloud_msg);
 
   /**
-   * @return the number of T's in the original shm_msgs::msg::PointCloud8k
+   * @return the number of T's in the original msg
    */
   size_t size() const;
 
   /**
-   * @param size The number of T's to reserve in the original shm_msgs::msg::PointCloud8k for
+   * @param size The number of T's to reserve in the original msg for
    */
   void reserve(size_t size);
 
   /**
-   * @param size The number of T's to change the size of the original shm_msgs::msg::PointCloud8k by
+   * @param size The number of T's to change the size of the original msg by
    */
   void resize(size_t size);
 
   /**
-   * @brief remove all T's from the original shm_msgs::msg::PointCloud8k
+   * @brief remove all T's from the original msg
    */
   void clear();
 
@@ -165,8 +166,8 @@ public:
   void setPointCloud2FieldsByString(int n_fields, ...);
 
 protected:
-  /** A reference to the original shm_msgs::msg::PointCloud8k that we read */
-  shm_msgs::msg::PointCloud8k & cloud_msg_;
+  /** A reference to the original msg that we read */
+  msg & cloud_msg_;
 };
 
 namespace impl
@@ -244,7 +245,7 @@ private:
    * @param field_name the name of the field to iterate upon
    * @return the offset at which the field is found
    */
-  int set_field(const shm_msgs::msg::PointCloud8k & cloud_msg, const std::string & field_name);
+  int set_field(const C & cloud_msg, const std::string & field_name);
 
   /** The "point_step" of the original cloud */
   int point_step_;
@@ -319,6 +320,6 @@ public:
 };
 }  // namespace shm_msgs
 
-#include <shm_msgs/impl/point_cloud2_iterator_8k.hpp> // NOLINT
+#include <shm_msgs/impl/point_cloud2_iterator.hpp> // NOLINT
 
 #endif  // SHM_MSGS__POINT_CLOUD2_ITERATOR_8K_HPP_

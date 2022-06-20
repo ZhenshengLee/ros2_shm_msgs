@@ -41,6 +41,26 @@ void open3dToRos(
   const open3d::geometry::PointCloud & pointcloud,
   shm_msgs::msg::PointCloud8k & ros_pc2,
   std::string frame_id = "open3d_pointcloud");
+void open3dToRos(
+  const open3d::geometry::PointCloud & pointcloud,
+  shm_msgs::msg::PointCloud512k & ros_pc2,
+  std::string frame_id = "open3d_pointcloud");
+void open3dToRos(
+  const open3d::geometry::PointCloud & pointcloud,
+  shm_msgs::msg::PointCloud1m & ros_pc2,
+  std::string frame_id = "open3d_pointcloud");
+void open3dToRos(
+  const open3d::geometry::PointCloud & pointcloud,
+  shm_msgs::msg::PointCloud2m & ros_pc2,
+  std::string frame_id = "open3d_pointcloud");
+void open3dToRos(
+  const open3d::geometry::PointCloud & pointcloud,
+  shm_msgs::msg::PointCloud4m & ros_pc2,
+  std::string frame_id = "open3d_pointcloud");
+void open3dToRos(
+  const open3d::geometry::PointCloud & pointcloud,
+  shm_msgs::msg::PointCloud8m & ros_pc2,
+  std::string frame_id = "open3d_pointcloud");
 /**
  * @brief Copy data from a shm_msgs::msg::PointCloud8k to a
  * open3d::geometry::PointCloud
@@ -51,6 +71,26 @@ void open3dToRos(
  */
 void rosToOpen3d(
   const shm_msgs::msg::PointCloud8k::SharedPtr & ros_pc2,
+  open3d::geometry::PointCloud & o3d_pc,
+  bool skip_colors = false);
+void rosToOpen3d(
+  const shm_msgs::msg::PointCloud512k::SharedPtr & ros_pc2,
+  open3d::geometry::PointCloud & o3d_pc,
+  bool skip_colors = false);
+void rosToOpen3d(
+  const shm_msgs::msg::PointCloud1m::SharedPtr & ros_pc2,
+  open3d::geometry::PointCloud & o3d_pc,
+  bool skip_colors = false);
+void rosToOpen3d(
+  const shm_msgs::msg::PointCloud2m::SharedPtr & ros_pc2,
+  open3d::geometry::PointCloud & o3d_pc,
+  bool skip_colors = false);
+void rosToOpen3d(
+  const shm_msgs::msg::PointCloud4m::SharedPtr & ros_pc2,
+  open3d::geometry::PointCloud & o3d_pc,
+  bool skip_colors = false);
+void rosToOpen3d(
+  const shm_msgs::msg::PointCloud8m::SharedPtr & ros_pc2,
   open3d::geometry::PointCloud & o3d_pc,
   bool skip_colors = false);
 

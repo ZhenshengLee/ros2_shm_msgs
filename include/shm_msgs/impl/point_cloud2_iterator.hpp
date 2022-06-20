@@ -88,12 +88,13 @@ inline int sizeOfPointField(int datatype)
  * @param offset the offset of that element
  * @return the offset of the next PointField that will be added to the PointCloud2
  */
+template <typename msg>
 inline int addPointField(
-  shm_msgs::msg::PointCloud8k & cloud_msg,
+  msg & cloud_msg,
   const std::string & name, int count, int datatype,
   int offset)
 {
-  if(cloud_msg.fields_size > shm_msgs::msg::PointCloud8k::FIELDS_MAX_SIZE)
+  if(cloud_msg.fields_size > msg::FIELDS_MAX_SIZE)
   {
     throw std::runtime_error("fields_size cannot > 8, please check!");
   }
@@ -117,25 +118,29 @@ inline int addPointField(
 namespace shm_msgs
 {
 
-inline PointCloud2Modifier8k::PointCloud2Modifier8k(
-  shm_msgs::msg::PointCloud8k & cloud_msg)
+template <typename msg>
+inline PointCloud2Modifier<msg>::PointCloud2Modifier(
+  msg & cloud_msg)
 : cloud_msg_(cloud_msg)
 {
 }
 
-inline size_t PointCloud2Modifier8k::size() const
+template <typename msg>
+inline size_t PointCloud2Modifier<msg>::size() const
 {
   return cloud_msg_.row_step * cloud_msg_.height;
 }
 
 // not work
-inline void PointCloud2Modifier8k::reserve(size_t size)
+template <typename msg>
+inline void PointCloud2Modifier<msg>::reserve(size_t size)
 {
   // cloud_msg_.data.reserve(size * cloud_msg_.point_step);
 }
 
 // not work for data array, only write to height and width
-inline void PointCloud2Modifier8k::resize(size_t size)
+template <typename msg>
+inline void PointCloud2Modifier<msg>::resize(size_t size)
 {
   // cloud_msg_.data.resize(size * cloud_msg_.point_step);
 
@@ -155,7 +160,8 @@ inline void PointCloud2Modifier8k::resize(size_t size)
 }
 
 // fill with 0
-inline void PointCloud2Modifier8k::clear()
+template <typename msg>
+inline void PointCloud2Modifier<msg>::clear()
 {
   std::fill(std::begin(cloud_msg_.data), std::end(cloud_msg_.data), 0 );
 
@@ -189,10 +195,11 @@ inline void PointCloud2Modifier8k::clear()
  * WARNING: THIS DOES NOT TAKE INTO ACCOUNT ANY PADDING AS DONE UNTIL HYDRO
  * For simple usual cases, the overloaded setPointCloud2FieldsByString is what you want.
  */
-inline void PointCloud2Modifier8k::setPointCloud2Fields(int n_fields, ...)
+template <typename msg>
+inline void PointCloud2Modifier<msg>::setPointCloud2Fields(int n_fields, ...)
 {
   cloud_msg_.fields_size = 0;
-  if(n_fields > shm_msgs::msg::PointCloud8k::FIELDS_MAX_SIZE)
+  if(n_fields > msg::FIELDS_MAX_SIZE)
   {
     throw std::runtime_error("fields_size cannot > 8, please check!");
   }
@@ -224,10 +231,11 @@ inline void PointCloud2Modifier8k::setPointCloud2Fields(int n_fields, ...)
  *
  * WARNING: THIS FUNCTION DOES ADD ANY NECESSARY PADDING TRANSPARENTLY
  */
-inline void PointCloud2Modifier8k::setPointCloud2FieldsByString(int n_fields, ...)
+template <typename msg>
+inline void PointCloud2Modifier<msg>::setPointCloud2FieldsByString(int n_fields, ...)
 {
   cloud_msg_.fields_size = 0;
-  if(n_fields > shm_msgs::msg::PointCloud8k::FIELDS_MAX_SIZE)
+  if(n_fields > msg::FIELDS_MAX_SIZE)
   {
     throw std::runtime_error("fields_size cannot > 8, please check!");
   }
@@ -409,7 +417,7 @@ bool PointCloud2IteratorBase<T, TT, U, C, V>::operator!=(const V<T> & iter) cons
   */
 template<typename T, typename TT, typename U, typename C, template<typename> class V>
 int PointCloud2IteratorBase<T, TT, U, C, V>::set_field(
-  const shm_msgs::msg::PointCloud8k & cloud_msg, const std::string & field_name)
+  const C & cloud_msg, const std::string & field_name)
 {
   is_bigendian_ = cloud_msg.is_bigendian;
   point_step_ = cloud_msg.point_step;

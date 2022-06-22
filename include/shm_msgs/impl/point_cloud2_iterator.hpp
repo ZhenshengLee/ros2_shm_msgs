@@ -50,7 +50,7 @@ using namespace shm_msgs;
  * \author Vincent Rabaud
  */
 
-namespace
+namespace shm_msgs
 {
 /** Return the size of a datatype (which is an enum of shm_msgs::msg::PointField::) in bytes
  * @param datatype one of the enums of shm_msgs::msg::PointField::
@@ -94,9 +94,9 @@ inline int addPointField(
   const std::string & name, int count, int datatype,
   int offset)
 {
-  if(cloud_msg.fields_size > msg::FIELDS_MAX_SIZE)
+  if(cloud_msg.fields_size >= msg::FIELDS_MAX_SIZE)
   {
-    throw std::runtime_error("fields_size cannot > 8, please check!");
+    throw std::runtime_error("fields_size cannot >= 8, please check!");
   }
   shm_msgs::msg::PointField point_field;
   set_str(point_field.name, name);

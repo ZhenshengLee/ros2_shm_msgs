@@ -19,10 +19,12 @@ ament_add_gtest(test_${PROJECT_NAME}_pc
 rosidl_target_interfaces(test_${PROJECT_NAME}_pc ${PROJECT_NAME} "rosidl_typesupport_cpp")
 install(TARGETS test_${PROJECT_NAME}_pc DESTINATION test/${PROJECT_NAME})
 
-ament_add_gtest(test_${PROJECT_NAME}_open3d test_open3d_conversions.cpp)
-target_link_libraries(test_${PROJECT_NAME}_open3d ${PROJECT_NAME}_open3d)
-rosidl_target_interfaces(test_${PROJECT_NAME}_open3d ${PROJECT_NAME} "rosidl_typesupport_cpp")
-install(TARGETS test_${PROJECT_NAME}_open3d DESTINATION test/${PROJECT_NAME})
+if(Open3D_FOUND)
+  ament_add_gtest(test_${PROJECT_NAME}_open3d test_open3d_conversions.cpp)
+  target_link_libraries(test_${PROJECT_NAME}_open3d ${PROJECT_NAME}_open3d)
+  rosidl_target_interfaces(test_${PROJECT_NAME}_open3d ${PROJECT_NAME} "rosidl_typesupport_cpp")
+  install(TARGETS test_${PROJECT_NAME}_open3d DESTINATION test/${PROJECT_NAME})
+endif()
 
 ament_add_gtest(test_${PROJECT_NAME}_image
   test_image_encodings.cpp

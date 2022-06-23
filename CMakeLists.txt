@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(shm_msgs)
 
-list(INSERT CMAKE_PREFIX_PATH 0 /opt/open3d/open3d)
+# add open3d installation directory here
+# list(INSERT CMAKE_PREFIX_PATH 0 /opt/open3d/open3d)
 
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)

@@ -13,7 +13,7 @@ foreach(SHM_IMGAE_BRIDGE_EXE ${SHM_IMGAE_BRIDGE_FILES})
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
-  ament_target_dependencies(${SHM_IMGAE_BRIDGE_EXE} "rclcpp" "cv_bridge")
+  ament_target_dependencies(${SHM_IMGAE_BRIDGE_EXE} "rclcpp" "cv_bridge" "sensor_msgs")
   target_link_libraries(${SHM_IMGAE_BRIDGE_EXE}  ${PROJECT_NAME}_image
       opencv_highgui
   )
@@ -36,7 +36,7 @@ foreach(SHM_PCL_BRIDGE_EXE ${SHM_PCL_BRIDGE_FILES})
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
-  ament_target_dependencies(${SHM_PCL_BRIDGE_EXE} "rclcpp" "cv_bridge")
+  ament_target_dependencies(${SHM_PCL_BRIDGE_EXE} "rclcpp" "cv_bridge" "sensor_msgs")
   target_link_libraries(${SHM_PCL_BRIDGE_EXE}  ${PROJECT_NAME}_image
       ${PCL_LIBRARIES}
   )

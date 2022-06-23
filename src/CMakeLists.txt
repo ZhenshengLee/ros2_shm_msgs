@@ -23,7 +23,7 @@ set(SHM_IMAGE_FILES
 
 foreach(SHM_IMAGE_EXE ${SHM_IMAGE_FILES})
   add_executable(${SHM_IMAGE_EXE} ${SHM_IMAGE_EXE}.cpp)
-  ament_target_dependencies(${SHM_IMAGE_EXE} "rclcpp" "cv_bridge")
+  ament_target_dependencies(${SHM_IMAGE_EXE} "rclcpp" "cv_bridge" "sensor_msgs")
   target_link_libraries(${SHM_IMAGE_EXE}  ${PROJECT_NAME}_image
       opencv_highgui
   )

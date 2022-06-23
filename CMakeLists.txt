@@ -21,6 +21,7 @@ find_package(rcpputils REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(message_filters REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 find_package(ament_cmake REQUIRED)
 find_package(Eigen3 REQUIRED)
@@ -106,6 +107,7 @@ set(dependencies
   cv_bridge
   message_filters
   pcl_msgs
+  sensor_msgs
 )
 
 set(msg_files

@@ -67,3 +67,11 @@ foreach(SHM_PCL_EXE ${SHM_PCL_FILES})
   )
   install(TARGETS ${SHM_PCL_EXE} DESTINATION lib/${PROJECT_NAME})
 endforeach()
+
+add_executable(image_syncer image_syncer.cpp)
+ament_target_dependencies(image_syncer rclcpp sensor_msgs message_filters)
+rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
+target_link_libraries(image_syncer
+  ${cpp_typesupport_target}
+)
+install(TARGETS image_syncer DESTINATION lib/${PROJECT_NAME})

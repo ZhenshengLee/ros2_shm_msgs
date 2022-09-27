@@ -53,8 +53,15 @@ public:
       // cv::waitKey(0);
     };
 
-    rclcpp::QoS qos(rclcpp::KeepLast(10));
-    m_subscription = create_subscription<Topic>("image", qos, callback);
+    // rclcpp::QoS qos(rclcpp::KeepLast(10));
+    rclcpp::QoS custom_qos_profile = rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_default))
+      .history(rmw_qos_history_policy_t::RMW_QOS_POLICY_HISTORY_KEEP_LAST)
+      .keep_last(5)
+      .reliability(rmw_qos_reliability_policy_t::RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT)
+      .durability(rmw_qos_durability_policy_t::RMW_QOS_POLICY_DURABILITY_VOLATILE)
+      .avoid_ros_namespace_conventions(false);
+
+    m_subscription = create_subscription<Topic>("image", custom_qos_profile, callback);
   }
 
 private:

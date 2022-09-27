@@ -43,8 +43,15 @@ target_link_libraries(${PROJECT_NAME}_image
     Boost::headers
     rcpputils::rcpputils
 )
-rosidl_target_interfaces(${PROJECT_NAME}_image
-  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
+target_link_libraries(${PROJECT_NAME}_image
+  ${cpp_typesupport_target}
+  )
+ament_target_dependencies(${PROJECT_NAME}_image
+  "rclcpp"
+  "std_msgs"
+)
+
 install(TARGETS ${PROJECT_NAME}_image
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/
@@ -66,8 +73,15 @@ target_link_libraries(${PROJECT_NAME}_pcl
   ${Boost_LIBRARIES}
   ${PCL_LIBRARIES}
 )
-rosidl_target_interfaces(${PROJECT_NAME}_pcl
-  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
+target_link_libraries(${PROJECT_NAME}_pcl
+  ${cpp_typesupport_target}
+  )
+ament_target_dependencies(${PROJECT_NAME}_pcl
+  "rclcpp"
+  "std_msgs"
+  message_filters
+)
 install(TARGETS ${PROJECT_NAME}_pcl
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/

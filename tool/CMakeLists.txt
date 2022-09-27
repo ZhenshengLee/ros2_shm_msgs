@@ -13,11 +13,12 @@ foreach(SHM_IMGAE_BRIDGE_EXE ${SHM_IMGAE_BRIDGE_FILES})
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
+  rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
   ament_target_dependencies(${SHM_IMGAE_BRIDGE_EXE} "rclcpp" "cv_bridge" "sensor_msgs")
   target_link_libraries(${SHM_IMGAE_BRIDGE_EXE}  ${PROJECT_NAME}_image
       opencv_highgui
+      ${cpp_typesupport_target}
   )
-  rosidl_target_interfaces(${SHM_IMGAE_BRIDGE_EXE} ${PROJECT_NAME} "rosidl_typesupport_cpp")
   install(TARGETS ${SHM_IMGAE_BRIDGE_EXE} DESTINATION lib/${PROJECT_NAME})
 endforeach()
 
@@ -36,10 +37,11 @@ foreach(SHM_PCL_BRIDGE_EXE ${SHM_PCL_BRIDGE_FILES})
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
-  ament_target_dependencies(${SHM_PCL_BRIDGE_EXE} "rclcpp" "cv_bridge" "sensor_msgs")
+  rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
+  ament_target_dependencies(${SHM_PCL_BRIDGE_EXE} "rclcpp" "pcl_conversions" "sensor_msgs")
   target_link_libraries(${SHM_PCL_BRIDGE_EXE}  ${PROJECT_NAME}_image
       ${PCL_LIBRARIES}
+      ${cpp_typesupport_target}
   )
-  rosidl_target_interfaces(${SHM_PCL_BRIDGE_EXE} ${PROJECT_NAME} "rosidl_typesupport_cpp")
   install(TARGETS ${SHM_PCL_BRIDGE_EXE} DESTINATION lib/${PROJECT_NAME})
 endforeach()

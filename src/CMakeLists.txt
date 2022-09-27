@@ -30,9 +30,11 @@ set(SHM_IMAGE_FILES
   image_talker
   image1m_talker
   image2m_talker
+  image8m_talker
   image_listener
   image1m_listener
   image2m_listener
+  image8m_listener
 )
 
 foreach(SHM_IMAGE_EXE ${SHM_IMAGE_FILES})

@@ -1,22 +1,54 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
-   <data_writer profile_name="default publisher profile" is_default_profile="true">
-       <qos>
-           <publishMode>
-               <kind>ASYNCHRONOUS</kind>
-           </publishMode>
-           <data_sharing>
-               <kind>AUTOMATIC</kind>
-           </data_sharing>
-       </qos>
-       <historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
-   </data_writer>
-   <data_reader profile_name="default subscription profile" is_default_profile="true">
-       <qos>
-           <data_sharing>
-               <kind>AUTOMATIC</kind>
-           </data_sharing>
-       </qos>
-       <historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
-   </data_reader>
+    <transport_descriptors>
+        <transport_descriptor>
+            <transport_id>UDP_transport</transport_id>
+            <type>UDPv4</type>
+            <maxInitialPeersRange>10</maxInitialPeersRange>
+        </transport_descriptor>
+    </transport_descriptors>
+
+    <participant profile_name="participant_profile_ros2" is_default_profile="true">
+        <rtps>
+            <name>profile_for_ros2_context</name>
+            <userTransports>
+                <transport_id>UDP_transport</transport_id>
+            </userTransports>
+            <useBuiltinTransports>false</useBuiltinTransports>
+
+            <builtin>
+                <metatrafficUnicastLocatorList>
+                    <locator />
+                </metatrafficUnicastLocatorList>
+                <initialPeersList>
+                    <locator>
+                        <udpv4>
+                            <address>127.0.0.1</address>
+                        </udpv4>
+                    </locator>
+                </initialPeersList>
+            </builtin>
+        </rtps>
+    </participant>
+
+    <data_writer profile_name="default publisher profile" is_default_profile="true">
+        <qos>
+            <publishMode>
+                <kind>ASYNCHRONOUS</kind>
+            </publishMode>
+            <data_sharing>
+                <kind>AUTOMATIC</kind>
+            </data_sharing>
+        </qos>
+        <historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
+    </data_writer>
+
+    <data_reader profile_name="default subscription profile" is_default_profile="true">
+        <qos>
+            <data_sharing>
+                <kind>AUTOMATIC</kind>
+            </data_sharing>
+        </qos>
+        <historyMemoryPolicy>PREALLOCATED_WITH_REALLOC</historyMemoryPolicy>
+    </data_reader>
 </profiles>

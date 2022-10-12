@@ -35,20 +35,7 @@ sudo sed -i 's/packages.ros.org/mirrors.tuna.tsinghua.edu.cn/' /etc/apt/sources.
 # esac
 
 # 设置bashrc
-echo '
-# using repo
-# using ccache
-export CCACHE_DIR=/ga_ros/ccache
-# export CC="/usr/lib/ccache/gcc"
-# export CXX="/usr/lib/ccache/g++"
-# selecting project
-export PROJ_TOP_DIR=/ga_ros
-echo "selecting project in:" $PROJ_TOP_DIR
-# sourcing proj
-source $PROJ_TOP_DIR/zs.bashrc
-# cd $PROJ_TOP_DIR
-
-' >> "/home/${DOCKER_USER}/.bashrc"
+cat /ga_ros/ga_deps/ros2_shm_msgs/scripts/.bashrc > "/home/${DOCKER_USER}/.bashrc"
 
 # echo '
 # genhtml_branch_coverage = 1

@@ -155,6 +155,8 @@ install(DIRECTORY
 add_subdirectory(lib)
 
 add_subdirectory(src)
+# extra image intra-process demos
+add_subdirectory(intra)
 
 if(BUILD_TESTING)
   add_subdirectory(test)

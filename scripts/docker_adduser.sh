@@ -2,6 +2,7 @@
 
 # 添加用户和组权限，配置超级用户
 
+deluser zs
 addgroup --gid "$DOCKER_GRP_ID" "$DOCKER_GRP"
 adduser --disabled-password --force-badname --gecos '' "$DOCKER_USER" \
     --uid "$DOCKER_USER_ID" --gid "$DOCKER_GRP_ID" 2>/dev/null

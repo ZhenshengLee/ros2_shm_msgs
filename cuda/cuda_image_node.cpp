@@ -1,0 +1,22 @@
+#include <rclcpp/rclcpp.hpp>
+
+#include <memory>
+
+#include "cuda_image_listener.hpp"
+#include "cuda_image_talker.hpp"
+
+int main(int argc, char *argv[])
+{
+    setvbuf(stdout, NULL, _IONBF, BUFSIZ);
+    rclcpp::init(argc, argv);
+    rclcpp::executors::SingleThreadedExecutor executor;
+
+    auto talker = std::make_shared<Talker>();
+    auto listener = std::make_shared<Listener>();
+    executor.add_node(talker);
+    executor.add_node(listener);
+
+    executor.spin();
+    rclcpp::shutdown();
+    return 0;
+}

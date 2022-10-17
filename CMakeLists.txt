@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.5)
 
 project(shm_msgs)
 
-# add open3d installation directory here
+list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_LIST_DIR}/cmake)
+
+# add installation directory here
 # list(INSERT CMAKE_PREFIX_PATH 0 /opt/open3d/open3d)
+list(INSERT CMAKE_PREFIX_PATH 0 /opt/opencv/opencv-4.6.0/)
 
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
@@ -81,21 +84,9 @@ list(REMOVE_ITEM PCL_LIBRARIES
   vtkRenderingOpenGL2
 )
 
-find_package(OpenCV 4 QUIET
-  COMPONENTS
-    opencv_core
-    opencv_imgproc
-    opencv_imgcodecs
-  CONFIG
-)
+find_package(OpenCV 4 QUIET)
 if(NOT OpenCV_FOUND)
-  find_package(OpenCV 3 REQUIRED
-    COMPONENTS
-      opencv_core
-      opencv_imgproc
-      opencv_imgcodecs
-    CONFIG
-  )
+  find_package(OpenCV 3 REQUIRED)
 endif()
 
 find_package(iceoryx_posh CONFIG REQUIRED)
@@ -157,6 +148,8 @@ add_subdirectory(lib)
 add_subdirectory(src)
 # extra image intra-process demos
 add_subdirectory(intra)
+# extra type-adaption cuda demos
+add_subdirectory(cuda)
 
 if(BUILD_TESTING)
   add_subdirectory(test)

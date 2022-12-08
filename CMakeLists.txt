@@ -32,57 +32,6 @@ find_package(Open3D)
 find_package(Boost QUIET)
 find_package(PCL REQUIRED QUIET COMPONENTS common io)
 find_package(pcl_msgs REQUIRED)
-# pcl vtk conflict
-list(REMOVE_ITEM PCL_LIBRARIES
-  vtkChartsCore
-  vtkCommonColor
-  vtkCommonCore
-  vtksys
-  vtkCommonDataModel
-  vtkCommonMath
-  vtkCommonMisc
-  vtkCommonSystem
-  vtkCommonTransforms
-  vtkCommonExecutionModel
-  vtkFiltersGeneral
-  vtkCommonComputationalGeometry
-  vtkFiltersCore
-  vtkInfovisCore
-  vtkFiltersExtraction
-  vtkFiltersStatistics
-  vtkImagingFourier
-  vtkImagingCore
-  vtkalglib
-  vtkRenderingContext2D
-  vtkRenderingCore
-  vtkFiltersGeometry
-  vtkFiltersSources
-  vtkRenderingFreeType
-  vtkFiltersModeling
-  vtkImagingSources
-  vtkInteractionStyle
-  vtkInteractionWidgets
-  vtkFiltersHybrid
-  vtkImagingColor
-  vtkImagingGeneral
-  vtkImagingHybrid
-  vtkIOImage
-  vtkDICOMParser
-  vtkmetaio
-  vtkRenderingAnnotation
-  vtkRenderingVolume
-  vtkIOXML
-  vtkIOCore
-  vtkIOXMLParser
-  vtkIOGeometry
-  vtkIOLegacy
-  vtkIOPLY
-  vtkRenderingLOD
-  vtkViewsContext2D
-  vtkViewsCore
-  vtkRenderingContextOpenGL2
-  vtkRenderingOpenGL2
-)
 
 find_package(OpenCV 4 QUIET)
 if(NOT OpenCV_FOUND)
@@ -124,23 +73,25 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   ADD_LINTER_TESTS
 )
 
+rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
+
+if(cpp_typesupport_target)
+  add_library(${PROJECT_NAME}_library INTERFACE)
+  target_include_directories(${PROJECT_NAME}_library INTERFACE
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+  target_link_libraries(${PROJECT_NAME}_library INTERFACE
+  "${cpp_typesupport_target}")
+
+  install(
+    TARGETS ${PROJECT_NAME}_library EXPORT export_${PROJECT_NAME}
+  )
+endif()
+
 include_directories(
   include
   ${EIGEN3_INCLUDE_DIR}
   ${PCL_COMMON_INCLUDE_DIRS}
-)
-
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION include/${PROJECT_NAME}/
-)
-
-install(DIRECTORY res
-  DESTINATION lib/${PROJECT_NAME}/
-)
-
-install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}
 )
 
 add_subdirectory(lib)
@@ -157,9 +108,20 @@ endif()
 
 add_subdirectory(tool)
 
-ament_export_targets(export_${PROJECT_NAME})
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION include/${PROJECT_NAME}/
+)
+
+install(DIRECTORY res
+  DESTINATION lib/${PROJECT_NAME}/
+)
+
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
 
 ament_export_dependencies(${dependencies})
 ament_export_include_directories(include)
+ament_export_targets(export_${PROJECT_NAME})
 
 ament_package()

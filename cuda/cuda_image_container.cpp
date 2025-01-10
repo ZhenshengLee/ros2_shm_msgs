@@ -158,7 +158,7 @@ CudaImageContainer::CudaImageContainer(const CudaImageContainer &other)
 
     // Copy the image data over so that this is an independent copy (deep copy).
     cuda_mem_ = std::make_shared<CUDAMemoryWrapper>(size_in_bytes());
-    if (cudaMemcpyAsync(other.cuda_mem_->device_memory(), cuda_mem_->device_memory(), size_in_bytes(),
+    if (cudaMemcpyAsync(cuda_mem_->device_memory(), other.cuda_mem_->device_memory(), size_in_bytes(),
                         cudaMemcpyDeviceToDevice, cuda_stream_->stream()) != cudaSuccess)
     {
         throw std::runtime_error("Failed to copy memory from the GPU");

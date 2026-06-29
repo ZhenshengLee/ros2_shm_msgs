@@ -35,7 +35,7 @@ public:
     // subscription callback to process arriving data
     auto callback = [this](const Topic::SharedPtr msg) -> void {
 
-      RCLCPP_INFO(this->get_logger(), "Received...");
+      RCLCPP_INFO_ONCE(this->get_logger(), "Received...");
       last_cvimage = cv_bridge::toCvShare(msg);
       // last_cvimage = cv_bridge::toCvCopy(msg);
 
@@ -43,10 +43,10 @@ public:
       auto timestamp_offset_ns = (rclcpp::Time(msg->header.stamp) - m_last_image_ts).nanoseconds();
       auto time_offset_ms = time_offset_ns / 1000000.0F;
       auto timestamp_offset_ms = timestamp_offset_ns / 1000000.0F;
-      RCLCPP_INFO(get_logger(), "get-image-transport-time: %.3f", time_offset_ms);
+      RCLCPP_ERROR_EXPRESSION(this->get_logger(), time_offset_ms > 1.0, "get-image-transport timeout with %.3f ms", time_offset_ms);
       if(m_last_image_ts.nanoseconds() > 0.0)
       {
-        RCLCPP_INFO(get_logger(), "get-image-timestamp_offset-time: %.3f", timestamp_offset_ms);
+        // RCLCPP_INFO(get_logger(), "get-image-timestamp_offset-time: %.3f", timestamp_offset_ms);
       }
       m_last_image_ts = msg->header.stamp;
       // cv::imshow("im show", last_cvimage->image);
@@ -56,7 +56,7 @@ public:
     // rclcpp::QoS qos(rclcpp::KeepLast(10));
     rclcpp::QoS custom_qos_profile = rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_default))
       .history(rmw_qos_history_policy_t::RMW_QOS_POLICY_HISTORY_KEEP_LAST)
-      .keep_last(5)
+      .keep_last(1)
       .reliability(rmw_qos_reliability_policy_t::RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT)
       .durability(rmw_qos_durability_policy_t::RMW_QOS_POLICY_DURABILITY_VOLATILE)
       .avoid_ros_namespace_conventions(false);
@@ -73,7 +73,7 @@ private:
 
 int main(int argc, char *argv[]) {
   rclcpp::init(argc, argv);
-  rclcpp::NodeOptions options;
+  rclcpp::NodeOptions options = rclcpp::NodeOptions().enable_rosout(false).start_parameter_event_publisher(false).start_parameter_services(false);
   rclcpp::spin(std::make_shared<Listener>(options));
   rclcpp::shutdown();
 
